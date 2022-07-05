@@ -1,0 +1,51 @@
+<div class="container">
+  <h1>Drag & Drop POC</h1>
+
+  <h2>Drag images from the list below to the trash to exclude them</h2>
+
+  <h3>Hold CTRL and click an image to select multiple items</h3>
+
+  <h4>Useful Links</h4>
+  <ul>
+    <li><a href="https://stackoverflow.com/questions/37078709/angular-2-check-if-shift-key-is-down-when-an-element-is-clicked">Hold key to select</a></li>
+    <li><a href="https://stackblitz.com/edit/angular-ivy-t4qdiq?file=src%2Fapp%2Fapp.component.ts">Do not delete elements from original list when dragging</a></li>
+    <li><a href="https://stackblitz.com/edit/angular-5qvora?file=src%2Fapp%2Fapp.component.html">Multi select drag&drop</a></li>
+    <li><a href="https://timdeschryver.dev/blog/exploring-drag-and-drop-with-the-new-angular-material-cdk#connecting-the-lists-drop-zones">Multi select drag&drop[2]</a></li>
+  </ul>
+  <div cdkDropListGroup class="group">
+    <div
+      class="trash-can"
+      #trash="cdkDropList"
+      cdkDropList
+      (cdkDropListDropped)="onDropFile($event)"
+    >
+      <p>Delete</p>
+      <mat-icon
+        aria-hidden="false"
+        class="icon"
+      >delete</mat-icon>
+    </div>
+
+    <ul
+      class="example-list"
+      cdkDropList
+      cdkDropListSortingDisabled
+      [cdkDropListData]="items"
+      [cdkDropListEnterPredicate]="noReturnPredicate"
+      (cdkDropListExited)="onSourceListExited($event)"
+      (cdkDropListEntered)="onSourceListEntered($event)"
+      [cdkDropListConnectedTo]="[trash]"
+      (cdkDropListDropped)="onSourceListDropped($event)"
+    >
+      <li *ngFor="let item of items">
+        <img
+          [src]="item.src"
+          [class.selected]="item.selected"
+          [cdkDragData]="item"
+          cdkDrag
+          (click)="onSelect(item, $event)"
+        >
+      </li>
+    </ul>
+  </div>
+</div>
